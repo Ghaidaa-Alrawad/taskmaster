@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#526D82"
+    android:background="#DDE6ED"
     tools:context=".activity.AllTasks">
 
     <androidx.appcompat.widget.Toolbar

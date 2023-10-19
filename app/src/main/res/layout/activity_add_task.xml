@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DDE6ED"
     android:foregroundTint="#00000000"
     tools:context=".activity.AddTask">
 
@@ -70,12 +71,13 @@
         android:layout_height="65dp"
         android:ems="10"
         android:fontFamily="casual"
+        android:hint="Task Title"
         android:inputType="text"
-        android:text="Add Task"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="27dp" />
 
     <EditText
@@ -84,12 +86,13 @@
         android:layout_height="65dp"
         android:ems="10"
         android:fontFamily="casual"
+        android:hint="Task Description"
         android:inputType="text"
-        android:text="Task Discription"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.483"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="27dp" />
 
     <Button
@@ -104,6 +107,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.622"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="27dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="148dp"
+        android:fontFamily="casual"
+        android:text="Total Task : 0"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.109"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

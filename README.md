@@ -12,7 +12,7 @@ This mobile app revolves around seamlessly adding tasks and effortlessly viewing
 
 ## Application screenshots
 
-![HomePage](/screenshots/HomePage.jpeg)
+![HomePage](/screenshots/HomePage.jpg)
 
 ![AddTaskPage](/screenshots/addTaskPage.jpeg)
 

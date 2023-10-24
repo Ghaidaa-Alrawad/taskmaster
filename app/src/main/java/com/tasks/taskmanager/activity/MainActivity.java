@@ -1,23 +1,29 @@
 package com.tasks.taskmanager.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tasks.taskmanager.R;
+import com.tasks.taskmanager.activity.adapter.TasksListRecyclerViewAdapter;
+import com.tasks.taskmanager.activity.model.Task;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpTasksRecyclerView();
 
         Button addTask = findViewById(R.id.addTaskButton);
 
@@ -32,14 +38,6 @@ public class MainActivity extends AppCompatActivity {
             Intent goToAllTasksPage = new Intent(MainActivity.this, AllTasks.class);
             startActivity(goToAllTasksPage);
         });
-
-        Button taskButton1 = findViewById(R.id.taskButton1);
-        Button taskButton2 = findViewById(R.id.taskButton2);
-        Button taskButton3 = findViewById(R.id.taskButton3);
-
-        taskButton1.setOnClickListener(v -> openTaskDetails("Task 1"));
-        taskButton2.setOnClickListener(v -> openTaskDetails("Task 2"));
-        taskButton3.setOnClickListener(v -> openTaskDetails("Task 3"));
 
         Button settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> {
@@ -81,5 +79,23 @@ public class MainActivity extends AppCompatActivity {
 
         TextView usernameTextView = findViewById(R.id.usernameTextView);
         usernameTextView.setText(username + "'s tasks");
+    }
+
+    private void setUpTasksRecyclerView(){
+
+        RecyclerView tasksListRecyclerView = (RecyclerView) findViewById(R.id.tasksListRecyclerView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        tasksListRecyclerView.setLayoutManager(layoutManager);
+
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new Task("Task 1", "Lab 28", Task.State.Complete));
+        tasks.add(new Task("Task 2", "Lab 29", Task.State.New));
+        tasks.add(new Task("Task 3", "Reading Class 29", Task.State.In_Progress));
+        tasks.add(new Task("Task 4", "Relaxing", Task.State.Assigned));
+
+        TasksListRecyclerViewAdapter adapter = new TasksListRecyclerViewAdapter(tasks, this);
+        tasksListRecyclerView.setAdapter(adapter);
     }
 }

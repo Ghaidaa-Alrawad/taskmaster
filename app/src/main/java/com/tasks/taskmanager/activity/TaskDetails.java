@@ -27,16 +27,22 @@ public class TaskDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         String taskTitle = intent.getStringExtra("taskTitle");
+        String taskBody = intent.getStringExtra("taskBody");
+        String taskState = intent.getStringExtra("taskState");
+
 
         TextView titleTextView = findViewById(R.id.taskDetailTitle);
         titleTextView.setText(taskTitle);
 
+        TextView stateTextView = findViewById(R.id.taskState);
+        stateTextView.setText(taskState);
+
         TextView descriptionTextView = findViewById(R.id.taskDetailDescription);
-        descriptionTextView.setText(getLoremIpsum());
+        descriptionTextView.setText(taskBody);
     }
 
-    private String getLoremIpsum() {
-        Lorem lorem = LoremIpsum.getInstance();
-        return lorem.getParagraphs(2, 4);
-    }
+//    private String getLoremIpsum() {
+//        Lorem lorem = LoremIpsum.getInstance();
+//        return lorem.getParagraphs(2, 4);
+//    }
 }

@@ -1,14 +1,26 @@
 package com.tasks.taskmanager.activity.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.util.Date;
+
+@Entity
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
+    public Long id;
     private String title;
     private String body;
+
+    java.util.Date dateCreated;
+
     private State state;
 
-    public Task(String title, String body, State state) {
+    public Task(String title, String body, Date dateCreated, State state) {
         this.title = title;
         this.body = body;
+        this.dateCreated = dateCreated;
         this.state = state;
     }
 
@@ -36,7 +48,11 @@ public class Task {
         this.state = state;
     }
 
-    public enum State{
-        New, Assigned, In_Progress, Complete
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tasks.taskmanager.R;
-import com.thedeanda.lorem.Lorem;
-import com.thedeanda.lorem.LoremIpsum;
 
 public class TaskDetails extends AppCompatActivity {
 

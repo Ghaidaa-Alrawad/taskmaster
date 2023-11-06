@@ -10,6 +10,7 @@ This mobile app revolves around seamlessly adding tasks and effortlessly viewing
 - Tasks Details page, will display the state of the task as well as the body of it (description)
 - You can add you name to be displayed in the home page form the setting page 
 - You can add a new task (title, description, state) and it will be added to the room database as well as displaying in the homePage
+- Added some Espresso testing 
 
 ## Application screenshots
 
@@ -24,3 +25,7 @@ This mobile app revolves around seamlessly adding tasks and effortlessly viewing
 ![DetailsPage](/screenshots/detailsPage.jfif)
 
 ![SettingPage](/screenshots/settingPage.jpeg)
+
+## Testing pass screenshot
+
+![Testing](/screenshots/testPass.png)

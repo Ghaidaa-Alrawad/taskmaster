@@ -39,8 +39,4 @@ public class TaskDetails extends AppCompatActivity {
         descriptionTextView.setText(taskBody);
     }
 
-//    private String getLoremIpsum() {
-//        Lorem lorem = LoremIpsum.getInstance();
-//        return lorem.getParagraphs(2, 4);
-//    }
 }

@@ -1,0 +1,31 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type Task @model @auth(rules: [{allow: public}]){
+  id: ID!
+  title: String!
+  body: String
+  dateCreated: AWSDateTime
+  state: State
+}
+
+enum State{
+  New
+  Assigned
+  In_Progress
+  Complete
+}
+
+# private String title;
+#    private String body;
+#
+#    java.util.Date dateCreated;
+#
+#    private State state;

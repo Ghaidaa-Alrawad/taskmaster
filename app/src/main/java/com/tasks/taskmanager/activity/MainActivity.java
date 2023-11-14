@@ -3,27 +3,34 @@ package com.tasks.taskmanager.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Task;
 import com.tasks.taskmanager.R;
 import com.tasks.taskmanager.activity.adapter.TasksListRecyclerViewAdapter;
-import com.tasks.taskmanager.activity.database.TasksDatabase;
-import com.tasks.taskmanager.activity.model.Task;
+import com.amplifyframework.datastore.generated.model.State;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String DATABASE_NAME = "taskDb";
 
-    private TasksDatabase tasksDatabase;
+    public static final String TAG = "MainActivity";
+
+    List<Task> tasks = new ArrayList<>();
+
+    TasksListRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,21 @@ public class MainActivity extends AppCompatActivity {
 
         TextView usernameTextView = findViewById(R.id.usernameTextView);
         usernameTextView.setText(username + "'s tasks");
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                success ->{
+                    Log.i(TAG, "Read Task successfully");
+                    tasks.clear();
+                    for (Task databaseTask: success.getData()){
+                        tasks.add(databaseTask);
+                    }
+                    runOnUiThread(() ->{
+                        adapter.notifyDataSetChanged();
+                    });
+                },
+                failure -> Log.i(TAG, "Did not red Task")
+        );
     }
 
     @Override
@@ -88,17 +110,12 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         tasksListRecyclerView.setLayoutManager(layoutManager);
 
-        tasksDatabase = Room.databaseBuilder(
-                        getApplicationContext(),
-                        TasksDatabase.class,
-                        DATABASE_NAME)
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+//        tasks.add(new Task("task 1", "testing", new Date(), State.New));
+//        tasks.add(new Task("task 2", "testing gg", new Date(), State.Complete));
 
-        List<Task> tasks = tasksDatabase.taskDao().findAll();
+//        List<Task> tasks = tasksDatabase.taskDao().findAll();
 
-        TasksListRecyclerViewAdapter adapter = new TasksListRecyclerViewAdapter(tasks, this);
+        adapter = new TasksListRecyclerViewAdapter(tasks, this);
         tasksListRecyclerView.setAdapter(adapter);
     }
 }

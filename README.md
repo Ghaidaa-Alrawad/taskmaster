@@ -29,4 +29,3 @@ This mobile app revolves around seamlessly adding tasks and effortlessly viewing
 ## Testing pass screenshot
 
 ![Testing](/screenshots/testPass.png)
-

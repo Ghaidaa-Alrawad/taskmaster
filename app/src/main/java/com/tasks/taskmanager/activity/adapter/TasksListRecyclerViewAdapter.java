@@ -10,11 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.Task;
 import com.tasks.taskmanager.R;
 import com.tasks.taskmanager.activity.TaskDetails;
-import com.tasks.taskmanager.activity.model.Task;
 
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksListRecyclerViewAdapter.TasksListViewHolder> {
 
@@ -39,13 +46,33 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
     public void onBindViewHolder(@NonNull TasksListViewHolder holder, int position) {
 
         TextView taskFragmentTextViewTitle = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewTitle);
+        TextView taskFragmentTextViewDate = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewDate);
         TextView taskFragmentTextViewState = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewState);
+
+        DateFormat dateCreatedIso8061InputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        dateCreatedIso8061InputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        DateFormat dateCreatedOutputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateCreatedOutputFormat.setTimeZone(TimeZone.getDefault());
+        String dateCreatedString = " ";
+
+        try {
+            {
+            Date dateCreatedJavaDate = dateCreatedIso8061InputFormat.parse(tasks.get(position).getDateCreated().format());
+            if (dateCreatedJavaDate != null){
+                dateCreatedString = dateCreatedOutputFormat.format(dateCreatedJavaDate);
+            }
+        }
+        }catch (ParseException e){
+            throw new RuntimeException(e);
+        }
 
         String taskTitle = tasks.get(position).getTitle();
         String taskBody = tasks.get(position).getBody();
+        String taskDate = dateCreatedString;
         String taskState = tasks.get(position).getState().toString();
 
         taskFragmentTextViewTitle.setText(taskTitle);
+        taskFragmentTextViewDate.setText(taskDate);
         taskFragmentTextViewState.setText(taskState);
 
         View tasksViewHolder = holder.itemView;
@@ -53,6 +80,7 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
             Intent goToTaskDetailsIntent = new Intent(callingActivity, TaskDetails.class);
             goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
             goToTaskDetailsIntent.putExtra("taskBody", taskBody);
+            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
             goToTaskDetailsIntent.putExtra("taskState", taskState);
 
             callingActivity.startActivity(goToTaskDetailsIntent);

@@ -1,0 +1,22 @@
+{
+  "api": {
+    "taskmaster": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDate": "2024-02-21T21:54:30.477Z",
+              "apiKeyExpirationDays": 100,
+              "description": "this API key for the model to be generated in the cloud taskMasterLab32"
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  }
+}

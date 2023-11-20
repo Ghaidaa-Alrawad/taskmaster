@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.temporal.Temporal;
+import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.ModelIdentifier;
 
 import java.util.List;
@@ -25,17 +26,20 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Tasks", type = Model.Type.USER, version = 1, authRules = {
   @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
+@Index(name = "Team", fields = {"teamID","title"})
 public final class Task implements Model {
   public static final QueryField ID = field("Task", "id");
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField DATE_CREATED = field("Task", "dateCreated");
   public static final QueryField STATE = field("Task", "state");
+  public static final QueryField TEAM_NAME = field("Task", "teamID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="AWSDateTime") Temporal.DateTime dateCreated;
   private final @ModelField(targetType="State") State state;
+  private final @ModelField(targetType="Team") @BelongsTo(targetName = "teamID", targetNames = {"teamID"}, type = Team.class) Team teamName;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
@@ -64,6 +68,10 @@ public final class Task implements Model {
       return state;
   }
   
+  public Team getTeamName() {
+      return teamName;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -72,12 +80,13 @@ public final class Task implements Model {
       return updatedAt;
   }
   
-  private Task(String id, String title, String body, Temporal.DateTime dateCreated, State state) {
+  private Task(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamName) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.dateCreated = dateCreated;
     this.state = state;
+    this.teamName = teamName;
   }
   
   @Override
@@ -93,6 +102,7 @@ public final class Task implements Model {
               ObjectsCompat.equals(getBody(), task.getBody()) &&
               ObjectsCompat.equals(getDateCreated(), task.getDateCreated()) &&
               ObjectsCompat.equals(getState(), task.getState()) &&
+              ObjectsCompat.equals(getTeamName(), task.getTeamName()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt());
       }
@@ -106,6 +116,7 @@ public final class Task implements Model {
       .append(getBody())
       .append(getDateCreated())
       .append(getState())
+      .append(getTeamName())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -121,6 +132,7 @@ public final class Task implements Model {
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("dateCreated=" + String.valueOf(getDateCreated()) + ", ")
       .append("state=" + String.valueOf(getState()) + ", ")
+      .append("teamName=" + String.valueOf(getTeamName()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -145,6 +157,7 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -154,7 +167,8 @@ public final class Task implements Model {
       title,
       body,
       dateCreated,
-      state);
+      state,
+      teamName);
   }
   public interface TitleStep {
     BuildStep title(String title);
@@ -167,6 +181,7 @@ public final class Task implements Model {
     BuildStep body(String body);
     BuildStep dateCreated(Temporal.DateTime dateCreated);
     BuildStep state(State state);
+    BuildStep teamName(Team teamName);
   }
   
 
@@ -176,16 +191,18 @@ public final class Task implements Model {
     private String body;
     private Temporal.DateTime dateCreated;
     private State state;
+    private Team teamName;
     public Builder() {
       
     }
     
-    private Builder(String id, String title, String body, Temporal.DateTime dateCreated, State state) {
+    private Builder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamName) {
       this.id = id;
       this.title = title;
       this.body = body;
       this.dateCreated = dateCreated;
       this.state = state;
+      this.teamName = teamName;
     }
     
     @Override
@@ -197,7 +214,8 @@ public final class Task implements Model {
           title,
           body,
           dateCreated,
-          state);
+          state,
+          teamName);
     }
     
     @Override
@@ -225,6 +243,12 @@ public final class Task implements Model {
         return this;
     }
     
+    @Override
+     public BuildStep teamName(Team teamName) {
+        this.teamName = teamName;
+        return this;
+    }
+    
     /**
      * @param id id
      * @return Current Builder instance, for fluent method chaining
@@ -237,8 +261,8 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, Temporal.DateTime dateCreated, State state) {
-      super(id, title, body, dateCreated, state);
+    private CopyOfBuilder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamName) {
+      super(id, title, body, dateCreated, state, teamName);
       Objects.requireNonNull(title);
     }
     
@@ -260,6 +284,11 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder state(State state) {
       return (CopyOfBuilder) super.state(state);
+    }
+    
+    @Override
+     public CopyOfBuilder teamName(Team teamName) {
+      return (CopyOfBuilder) super.teamName(teamName);
     }
   }
   

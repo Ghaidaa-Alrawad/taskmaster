@@ -7,7 +7,7 @@
           "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2024-02-21T21:54:30.477Z",
+              "apiKeyExpirationDate": "2024-02-24T11:03:19.938Z",
               "apiKeyExpirationDays": 100,
               "description": "this API key for the model to be generated in the cloud taskMasterLab32"
             },

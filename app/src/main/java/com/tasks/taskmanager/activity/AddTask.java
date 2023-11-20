@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class AddTask extends AppCompatActivity {
 
-    public static final String TAG = "AddTaskActivity";
+    public static final String TAG = "gggAddTaskActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

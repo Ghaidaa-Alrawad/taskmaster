@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 success ->{
-                    Log.i(TAG, "Read Task successfully");
+                    Log.i("anything", "Read Task successfully");
                     tasks.clear();
                     for (Task databaseTask: success.getData()){
                         tasks.add(databaseTask);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                     });
                 },
-                failure -> Log.i(TAG, "Did not red Task")
+                failure -> Log.i("anything", "Did not red Task")
         );
     }
 

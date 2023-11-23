@@ -60,8 +60,8 @@ public class AddTask extends AppCompatActivity {
 //                    State.fromString(taskStateSpinner.getSelectedItem().toString())
 //            );
 
-            String title = ((EditText)findViewById(R.id.addTaskInput)).getText().toString();
-            String body = ((EditText)findViewById(R.id.taskDiscriptionInput)).getText().toString();
+            String title = ((EditText) findViewById(R.id.addTaskInput)).getText().toString();
+            String body = ((EditText) findViewById(R.id.taskDiscriptionInput)).getText().toString();
             String currentDate = com.amazonaws.util.DateUtils.formatISO8601Date(new Date());
 
             Task newTask = Task.builder()

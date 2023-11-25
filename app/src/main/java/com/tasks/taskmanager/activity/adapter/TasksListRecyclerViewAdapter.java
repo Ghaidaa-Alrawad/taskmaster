@@ -48,6 +48,8 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         TextView taskFragmentTextViewTitle = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewTitle);
         TextView taskFragmentTextViewDate = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewDate);
         TextView taskFragmentTextViewState = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewState);
+        TextView taskFragmentTextViewTeam = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewTeam);
+
 
         DateFormat dateCreatedIso8061InputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         dateCreatedIso8061InputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -70,10 +72,13 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         String taskBody = tasks.get(position).getBody();
         String taskDate = dateCreatedString;
         String taskState = tasks.get(position).getState().toString();
+        String teamName = tasks.get(position).getTeamTask().getName();
 
         taskFragmentTextViewTitle.setText(taskTitle);
         taskFragmentTextViewDate.setText(taskDate);
         taskFragmentTextViewState.setText(taskState);
+        taskFragmentTextViewTeam.setText(teamName);
+
 
         View tasksViewHolder = holder.itemView;
         tasksViewHolder.setOnClickListener(v -> {
@@ -82,6 +87,7 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
             goToTaskDetailsIntent.putExtra("taskBody", taskBody);
             goToTaskDetailsIntent.putExtra("taskDate", taskDate);
             goToTaskDetailsIntent.putExtra("taskState", taskState);
+            goToTaskDetailsIntent.putExtra("teamName", teamName);
 
             callingActivity.startActivity(goToTaskDetailsIntent);
         });

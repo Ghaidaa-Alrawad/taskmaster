@@ -42,5 +42,4 @@ public class TaskDetails extends AppCompatActivity {
         TextView teamTaskTextView = findViewById(R.id.teamTask);
         teamTaskTextView.setText(teamTask);
     }
-
 }

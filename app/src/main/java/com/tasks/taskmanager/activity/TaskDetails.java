@@ -16,7 +16,7 @@ public class TaskDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
 
-        Button back = (Button) findViewById(R.id.backDetails);
+        Button back = findViewById(R.id.backDetails);
 
         back.setOnClickListener(v -> {
             Intent goBack = new Intent(TaskDetails.this, MainActivity.class);
@@ -27,7 +27,7 @@ public class TaskDetails extends AppCompatActivity {
         String taskTitle = intent.getStringExtra("taskTitle");
         String taskBody = intent.getStringExtra("taskBody");
         String taskState = intent.getStringExtra("taskState");
-
+        String teamTask = intent.getStringExtra("teamName");
 
         TextView titleTextView = findViewById(R.id.taskDetailTitle);
         titleTextView.setText(taskTitle);
@@ -37,6 +37,9 @@ public class TaskDetails extends AppCompatActivity {
 
         TextView descriptionTextView = findViewById(R.id.taskDetailDescription);
         descriptionTextView.setText(taskBody);
-    }
 
+        TextView teamTaskTextView = findViewById(R.id.teamTask);
+        teamTaskTextView.setText(teamTask);
+
+    }
 }

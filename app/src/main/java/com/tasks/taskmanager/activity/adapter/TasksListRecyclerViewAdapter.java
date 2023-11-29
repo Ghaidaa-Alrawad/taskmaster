@@ -1,5 +1,7 @@
 package com.tasks.taskmanager.activity.adapter;
 
+import static com.tasks.taskmanager.activity.MainActivity.TASK_ID_TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.datastore.generated.model.Task;
 import com.tasks.taskmanager.R;
+import com.tasks.taskmanager.activity.EditTaskActivity;
 import com.tasks.taskmanager.activity.TaskDetails;
 
 
@@ -48,6 +51,8 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         TextView taskFragmentTextViewTitle = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewTitle);
         TextView taskFragmentTextViewDate = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewDate);
         TextView taskFragmentTextViewState = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewState);
+        TextView taskFragmentTextViewTeam = (TextView) holder.itemView.findViewById(R.id.listFragmentTextViewTeam);
+
 
         DateFormat dateCreatedIso8061InputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         dateCreatedIso8061InputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -70,18 +75,25 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         String taskBody = tasks.get(position).getBody();
         String taskDate = dateCreatedString;
         String taskState = tasks.get(position).getState().toString();
+        String teamName = tasks.get(position).getTeamTask().getName();
+
 
         taskFragmentTextViewTitle.setText(taskTitle);
         taskFragmentTextViewDate.setText(taskDate);
         taskFragmentTextViewState.setText(taskState);
+        taskFragmentTextViewTeam.setText(teamName);
+
 
         View tasksViewHolder = holder.itemView;
         tasksViewHolder.setOnClickListener(v -> {
-            Intent goToTaskDetailsIntent = new Intent(callingActivity, TaskDetails.class);
-            goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
-            goToTaskDetailsIntent.putExtra("taskBody", taskBody);
-            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
-            goToTaskDetailsIntent.putExtra("taskState", taskState);
+            Intent goToTaskDetailsIntent = new Intent(callingActivity, EditTaskActivity.class);
+            goToTaskDetailsIntent.putExtra(TASK_ID_TAG, tasks.get(position).getId());
+//            goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
+//            goToTaskDetailsIntent.putExtra("taskBody", taskBody);
+//            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
+//            goToTaskDetailsIntent.putExtra("taskState", taskState);
+//            goToTaskDetailsIntent.putExtra("teamName", teamName);
+
 
             callingActivity.startActivity(goToTaskDetailsIntent);
         });
@@ -99,5 +111,4 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
             super(itemView);
         }
     }
-
 }

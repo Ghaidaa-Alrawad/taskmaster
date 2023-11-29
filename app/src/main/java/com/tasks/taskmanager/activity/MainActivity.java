@@ -11,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.tasks.taskmanager.R;
 import com.tasks.taskmanager.activity.adapter.TasksListRecyclerViewAdapter;
 import com.amplifyframework.datastore.generated.model.State;
@@ -32,12 +34,17 @@ public class MainActivity extends AppCompatActivity {
 
     TasksListRecyclerViewAdapter adapter;
 
+    public static final String TASK_ID_TAG = "Task ID Tag";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setUpTasksRecyclerView();
+
+//        Intent intent = getIntent();
+//        String selectedTeam = intent.getStringExtra("selectedTeam");
 
         Button addTask = findViewById(R.id.addTaskButton);
 
@@ -79,6 +86,63 @@ public class MainActivity extends AppCompatActivity {
                 },
                 failure -> Log.i("anything", "Did not red Task")
         );
+//        Team team1 = Team.builder()
+//                         .name("Team 1")
+//                         .build();
+//
+//        Team team2 = Team.builder()
+//                .name("Team 2")
+//                .build();
+//
+//        Team team3 = Team.builder()
+//                .name("Team 3")
+//                .build();
+//
+//        Team team4 = Team.builder()
+//                .name("Team 4")
+//                .build();
+//
+//        Amplify.API.mutate(
+//                ModelMutation.create(team1),
+//                successRes -> Log.i(TAG, "MainActivity, made a team successfully"),
+//                failureRes -> Log.i(TAG, "MainActivity, failed making a team")
+//        );
+//
+//        Amplify.API.mutate(
+//                ModelMutation.create(team2),
+//                successRes -> Log.i(TAG, "MainActivity, made a team successfully"),
+//                failureRes -> Log.i(TAG, "MainActivity, failed making a team")
+//        );
+//
+//        Amplify.API.mutate(
+//                ModelMutation.create(team3),
+//                successRes -> Log.i(TAG, "MainActivity, made a team successfully"),
+//                failureRes -> Log.i(TAG, "MainActivity, failed making a team")
+//        );
+//
+//        Amplify.API.mutate(
+//                ModelMutation.create(team4),
+//                successRes -> Log.i(TAG, "MainActivity, made a team successfully"),
+//                failureRes -> Log.i(TAG, "MainActivity, failed making a team")
+//        );
+
+//        Amplify.API.query(
+//                ModelQuery.list(Task.class),
+//                success ->{
+//                    Log.i(TAG, "Read Task successfully");
+//                    tasks.clear();
+//                    for (Task databaseTask : success.getData()){
+//                        if (databaseTask.getTeamTask().getName().equals(selectedTeam)) {
+//                            tasks.add(databaseTask);
+//                        }
+//                    }
+//                    runOnUiThread(() ->{
+//                        adapter.notifyDataSetChanged();
+//                    });
+//                },
+//                failure -> Log.i(TAG, "Did not red Task")
+//        );
+
     }
 
     @Override
@@ -102,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView usernameTextView = findViewById(R.id.usernameTextView);
         usernameTextView.setText(username + "'s tasks");
+
+        readTasks();
     }
 
     private void setUpTasksRecyclerView() {
@@ -110,12 +176,30 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         tasksListRecyclerView.setLayoutManager(layoutManager);
 
-//        tasks.add(new Task("task 1", "testing", new Date(), State.New));
-//        tasks.add(new Task("task 2", "testing gg", new Date(), State.Complete));
-
-//        List<Task> tasks = tasksDatabase.taskDao().findAll();
-
         adapter = new TasksListRecyclerViewAdapter(tasks, this);
         tasksListRecyclerView.setAdapter(adapter);
+    }
+
+    private void readTasks() {
+        Intent intent = getIntent();
+        String selectedTeam = intent.getStringExtra("selectedTeam");
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                success -> {
+                    Log.i(TAG, "Read Task successfully");
+                    Log.i(TAG, "success.getData()"+success.getData().toString());
+                    tasks.clear();
+                    for (Task databaseTask : success.getData()) {
+                        if (databaseTask.getTeamTask().getName().equals(selectedTeam)) {
+                            tasks.add(databaseTask);
+                        }
+                    }
+                    runOnUiThread(() -> {
+                        adapter.notifyDataSetChanged();
+                    });
+                },
+                failure -> Log.i(TAG, "Did not read Task")
+        );
     }
 }

@@ -87,12 +87,12 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         View tasksViewHolder = holder.itemView;
         tasksViewHolder.setOnClickListener(v -> {
             Intent goToTaskDetailsIntent = new Intent(callingActivity, EditTaskActivity.class);
-            goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
-            goToTaskDetailsIntent.putExtra("taskBody", taskBody);
-            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
-            goToTaskDetailsIntent.putExtra("taskState", taskState);
-            goToTaskDetailsIntent.putExtra("teamName", teamName);
             goToTaskDetailsIntent.putExtra(TASK_ID_TAG, tasks.get(position).getId());
+//            goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
+//            goToTaskDetailsIntent.putExtra("taskBody", taskBody);
+//            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
+//            goToTaskDetailsIntent.putExtra("taskState", taskState);
+//            goToTaskDetailsIntent.putExtra("teamName", teamName);
 
 
             callingActivity.startActivity(goToTaskDetailsIntent);

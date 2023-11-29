@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 ModelQuery.list(Task.class),
                 success -> {
                     Log.i(TAG, "Read Task successfully");
+                    Log.i(TAG, "success.getData()"+success.getData().toString());
                     tasks.clear();
                     for (Task databaseTask : success.getData()) {
                         if (databaseTask.getTeamTask().getName().equals(selectedTeam)) {

@@ -53,7 +53,11 @@ public class EditTaskActivity extends AppCompatActivity {
 
         taskFuture = new CompletableFuture<>();
         teamFuture = new CompletableFuture<>();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         setUpEditTask();
         setUpSave();
         setupDelete();
@@ -94,10 +98,10 @@ public class EditTaskActivity extends AppCompatActivity {
             Log.e(TAG, "ExecutionException while getting tasks");
         }
 
-        titleEditText = ((EditText) findViewById(R.id.editTaskTitle));
+        titleEditText = findViewById(R.id.editTaskTitle);
         titleEditText.setText(tasksToEdit.getTitle());
 
-        descriptionEditText = ((EditText) findViewById(R.id.editTaskDescription));
+        descriptionEditText = findViewById(R.id.editTaskDescription);
         descriptionEditText.setText(tasksToEdit.getBody());
 
         setUpSpinners();
@@ -155,11 +159,13 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     private void setUpSave() {
-        Button saveEdit = findViewById(R.id.saveEdit);
+        Button saveEdit = (Button) findViewById(R.id.saveEdit);
 
         saveEdit.setOnClickListener(v -> {
             List<Team> teamsList = null;
             String teamToSaveString = taskTeamSpinner.getSelectedItem().toString();
+
+            Log.i(TAG, teamToSaveString+ "gggg");
 
             try {
                 teamsList = teamFuture.get();
@@ -181,11 +187,16 @@ public class EditTaskActivity extends AppCompatActivity {
                     .state(taskStateFromString(taskStateSpinner.getSelectedItem().toString()))
                     .build();
 
+            Log.i(TAG, String.valueOf(tasksToSave));
+            Log.i(TAG, "tassskkk"+tasksToSave.toString());
+
+
+            //f8f38ae9-854f-4b14-bdb6-0039d7559b59
             Amplify.API.mutate(
                     ModelMutation.update(tasksToSave),
                     successRes -> {
-                        Log.i(TAG, "EditTaskActivity.setUpSave(): update a task successfully");
-                        Snackbar.make(findViewById(R.id.editTaskActivity), "Updates saves :D", Snackbar.LENGTH_LONG).show();
+                        Log.i(TAG, "EditTaskActivity.setUpSave(): update a task successfully" + successRes.toString());
+                        Snackbar.make(findViewById(R.id.editTaskActivity), "Updated Task :D", Snackbar.LENGTH_LONG).show();
                     },
                     failureRes -> Log.i(TAG, "EditTaskActivity.setUpSave(): failed" + failureRes)
             );
@@ -208,7 +219,7 @@ public class EditTaskActivity extends AppCompatActivity {
             Amplify.API.mutate(
                     ModelMutation.delete(tasksToEdit),
                     successRes -> {
-                        Log.i(TAG, "Deleted task successfully");
+                        Log.i(TAG, "Deleted task successfully" + successRes.toString());
                         Intent goToTaskHome = new Intent(EditTaskActivity.this, MainActivity.class);
                         startActivity(goToTaskHome);
                     },

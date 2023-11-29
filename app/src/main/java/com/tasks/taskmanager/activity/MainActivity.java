@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     TasksListRecyclerViewAdapter adapter;
 
+    public static final String TASK_ID_TAG = "Task ID Tag";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 //                },
 //                failure -> Log.i(TAG, "Did not red Task")
 //        );
+
     }
 
     @Override
@@ -171,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 ModelQuery.list(Task.class),
                 success -> {
                     Log.i(TAG, "Read Task successfully");
+                    Log.i(TAG, "success.getData()"+success.getData().toString());
                     tasks.clear();
                     for (Task databaseTask : success.getData()) {
                         if (databaseTask.getTeamTask().getName().equals(selectedTeam)) {

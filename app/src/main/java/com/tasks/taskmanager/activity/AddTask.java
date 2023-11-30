@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 public class AddTask extends AppCompatActivity {
 
-    public static final String TAG = "AddTaskActivity";
+    public static final String TAG = "gggAddTaskActivity";
 
     Spinner teamSpinner = null;
 

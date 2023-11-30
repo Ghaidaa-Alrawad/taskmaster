@@ -290,4 +290,5 @@ public final class Task implements Model {
       return (CopyOfBuilder) super.teamTask(teamTask);
     }
   }
+
 }

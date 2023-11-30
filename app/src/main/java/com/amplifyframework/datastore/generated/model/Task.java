@@ -25,7 +25,6 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Tasks", authRules = {
   @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
-
 @Index(name = "byTeam", fields = {"teamId","title"})
 public final class Task implements Model {
   public static final QueryField ID = field("Task", "id");
@@ -67,7 +66,7 @@ public final class Task implements Model {
   public State getState() {
       return state;
   }
-
+  
   public Team getTeamTask() {
       return teamTask;
   }
@@ -79,7 +78,7 @@ public final class Task implements Model {
   public Temporal.DateTime getUpdatedAt() {
       return updatedAt;
   }
-
+  
   private Task(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask) {
     this.id = id;
     this.title = title;
@@ -191,14 +190,11 @@ public final class Task implements Model {
     private String body;
     private Temporal.DateTime dateCreated;
     private State state;
-
     private Team teamTask;
-
     public Builder() {
       
     }
     
-
     private Builder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask) {
       this.id = id;
       this.title = title;
@@ -294,4 +290,5 @@ public final class Task implements Model {
       return (CopyOfBuilder) super.teamTask(teamTask);
     }
   }
+
 }

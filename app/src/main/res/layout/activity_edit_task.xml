@@ -2,59 +2,52 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editTaskActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDE6ED"
-    android:foregroundTint="#00000000"
-    tools:context=".activity.AddTask">
+    tools:context=".activity.EditTaskActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="408dp"
-        android:layout_height="75dp"
-        android:background="#E627374D"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="0dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
-        android:fontFamily="casual"
-        android:text="TaskMaster"
-        android:textColor="#DDE6ED"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar2"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="12dp" />
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/saveEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginEnd="68dp"
         android:backgroundTint="#526D82"
         android:fontFamily="casual"
-        android:text="Back"
+        android:text="Save"
         android:textColor="#DDE6ED"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/toolbar2"
+        app:layout_constraintEnd_toStartOf="@+id/deleteTask"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.936"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/deleteTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="#526D82"
+        android:fontFamily="casual"
+        android:text="Delete Task"
+        android:textColor="#DDE6ED"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936"
+        tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="casual"
-        android:text="Add Task"
+        android:text="Edit Task"
         android:textColor="#27374D"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -66,7 +59,7 @@
         app:layout_constraintVertical_bias="0.148" />
 
     <EditText
-        android:id="@+id/addTaskInput"
+        android:id="@+id/editTaskTitle"
         android:layout_width="356dp"
         android:layout_height="65dp"
         android:ems="10"
@@ -82,7 +75,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/taskDiscriptionInput"
+        android:id="@+id/editTaskDescription"
         android:layout_width="356dp"
         android:layout_height="65dp"
         android:ems="10"
@@ -97,39 +90,12 @@
         app:layout_constraintVertical_bias="0.573"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/addTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#526D82"
-        android:fontFamily="casual"
-        android:text="Add Task"
-        android:textColor="#DDE6ED"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp" />
-
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="casual"
-        android:text="Total Task : 0"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.917"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="200dp"
         android:fontFamily="casual"
         android:text="Task Title"
         android:textColor="#27374D"
@@ -141,10 +107,11 @@
         app:layout_constraintVertical_bias="0.952" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="344dp"
         android:fontFamily="casual"
         android:text="Description"
         android:textColor="#27374D"
@@ -156,7 +123,7 @@
         app:layout_constraintVertical_bias="0.972" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -173,7 +140,7 @@
         app:layout_constraintVertical_bias="0.697" />
 
     <TextView
-        android:id="@+id/teamTextView"
+        android:id="@+id/teamTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -190,7 +157,7 @@
         app:layout_constraintVertical_bias="0.805" />
 
     <Spinner
-        android:id="@+id/stateSpinner"
+        android:id="@+id/editStateSpinner"
         android:layout_width="225dp"
         android:layout_height="36dp"
         android:layout_marginEnd="60dp"
@@ -200,7 +167,7 @@
         app:layout_constraintVertical_bias="0.696" />
 
     <Spinner
-        android:id="@+id/teamSpinner"
+        android:id="@+id/editTeamSpinner"
         android:layout_width="225dp"
         android:layout_height="36dp"
         android:layout_marginEnd="60dp"
@@ -208,5 +175,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.805" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

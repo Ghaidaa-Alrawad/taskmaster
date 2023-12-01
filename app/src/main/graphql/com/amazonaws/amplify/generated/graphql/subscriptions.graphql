@@ -60,6 +60,7 @@ subscription OnCreateTask($filter: ModelSubscriptionTaskFilterInput) {
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version
@@ -87,6 +88,7 @@ subscription OnUpdateTask($filter: ModelSubscriptionTaskFilterInput) {
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version
@@ -114,6 +116,7 @@ subscription OnDeleteTask($filter: ModelSubscriptionTaskFilterInput) {
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version

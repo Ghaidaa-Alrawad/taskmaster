@@ -17,7 +17,6 @@
       }
     }
   },
-
   "devfinalv": {
     "awscloudformation": {
       "AuthRoleName": "amplify-taskmaster-devfinalv-170707-authRole",
@@ -52,6 +51,9 @@
       },
       "auth": {
         "taskmastere11a030e": {}
+      },
+      "storage": {
+        "taskmaster": {}
       }
     }
   }

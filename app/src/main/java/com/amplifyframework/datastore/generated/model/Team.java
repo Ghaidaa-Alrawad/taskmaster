@@ -186,5 +186,4 @@ public final class Team implements Model {
       return (CopyOfBuilder) super.name(name);
     }
   }
-  
 }

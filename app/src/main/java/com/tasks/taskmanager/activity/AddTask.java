@@ -1,14 +1,21 @@
 package com.tasks.taskmanager.activity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
@@ -24,6 +31,7 @@ import com.tasks.taskmanager.R;
 //import com.tasks.taskmanager.activity.model.State;
 //import com.tasks.taskmanager.activity.model.Task;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +47,10 @@ public class AddTask extends AppCompatActivity {
     Spinner taskStateSpinner = null;
 
     CompletableFuture<List<Team>> teamFuture = new CompletableFuture<>();
+
+    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+    private ImageView selectedImageView;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +77,48 @@ public class AddTask extends AppCompatActivity {
         setTeamSpinner();
         setUpAddButton();
 
+        selectedImageView = findViewById(R.id.imageView3);
+
+        pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(),
+                uri -> {
+                    if (uri != null) {
+                        try {
+                            selectedImageView.setImageURI(uri);
+                            filePath = getRealPathFromURI(uri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e("PHTACT", "Error setting image URI: " + e.getMessage());
+                        }
+                    } else {
+                        Log.d("PHTACT", "No media selected");
+                        filePath = null;
+                    }
+                });
+
+    }
+
+    public void onAddImageButtonClicked(View view) {
+        if (pickMedia != null) {
+            pickMedia.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        } else {
+            Log.e("PhotoPicker", "pickMedia is null");
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            return filePath;
+        }
     }
 
     private void setTeamSpinner(){
@@ -112,38 +166,88 @@ public class AddTask extends AppCompatActivity {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Your Task is added :D", Snackbar.LENGTH_LONG);
         addTask.setOnClickListener(v -> {
 
-            String title = ((EditText)findViewById(R.id.addTaskInput)).getText().toString();
-            String body = ((EditText)findViewById(R.id.taskDiscriptionInput)).getText().toString();
-            String currentDate = com.amazonaws.util.DateUtils.formatISO8601Date(new Date());
-            String selectedTeamString = teamSpinner.getSelectedItem().toString();
+            if (filePath != null && !filePath.isEmpty()){
+                File imageFile = new File(filePath);
+                String key = "images/" + imageFile.getName();
 
-            List<Team> teams = null;
-            try {
-                teams = teamFuture.get();
-            }catch (InterruptedException ie){
-                Log.e(TAG, "InterruptedException while getting the teams");
-            }catch (ExecutionException ee){
-                Log.e(TAG, "ExecutionException while getting the teams");
+                String title = ((EditText) findViewById(R.id.addTaskInput)).getText().toString();
+                String body = ((EditText) findViewById(R.id.taskDiscriptionInput)).getText().toString();
+                String currentDate = com.amazonaws.util.DateUtils.formatISO8601Date(new Date());
+                String selectedTeamString = teamSpinner.getSelectedItem().toString();
+
+                List<Team> teams = null;
+                try {
+                    teams = teamFuture.get();
+                }catch (InterruptedException ie){
+                    Log.e(TAG, "InterruptedException while getting the teams");
+                }catch (ExecutionException ee){
+                    Log.e(TAG, "ExecutionException while getting the teams");
+                }
+
+                Team selectedTeam = teams.stream().filter(t -> t.getName().equals(selectedTeamString)).findAny().orElseThrow(RuntimeException::new);
+
+                Task newTask = Task.builder()
+                        .title(title)
+                        .body(body)
+                        .dateCreated(new Temporal.DateTime(new Date(), 0))
+                        .state((State) taskStateSpinner.getSelectedItem())
+                        .teamTask(selectedTeam)
+                        .taskS3Uri(key)
+                        .build();
+
+                Amplify.Storage.uploadFile(key,
+                        imageFile,
+                        result -> {
+                            Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey());
+                        },
+                        error -> {
+                            Log.e("MyAmplifyApp", "Upload failed", error);
+                        });
+
+                Amplify.API.mutate(
+                        ModelMutation.create(newTask),
+                        successRes -> Log.i(TAG, "AddTaskActivity.onCreate(): made a task successfully"),
+                        failureRes -> Log.e(TAG, "AddTaskActivity.onCreate(): failed with this res" + failureRes)
+                );
+
+                snackbar.show();
+
+            }else {
+                String title = ((EditText) findViewById(R.id.addTaskInput)).getText().toString();
+                String body = ((EditText) findViewById(R.id.taskDiscriptionInput)).getText().toString();
+                String currentDate = com.amazonaws.util.DateUtils.formatISO8601Date(new Date());
+                String selectedTeamString = teamSpinner.getSelectedItem().toString();
+
+                List<Team> teams = null;
+                try {
+                    teams = teamFuture.get();
+                }catch (InterruptedException ie){
+                    Log.e(TAG, "InterruptedException while getting the teams");
+                }catch (ExecutionException ee){
+                    Log.e(TAG, "ExecutionException while getting the teams");
+                }
+
+                Team selectedTeam = teams.stream().filter(t -> t.getName().equals(selectedTeamString)).findAny().orElseThrow(RuntimeException::new);
+
+                Task newTask = Task.builder()
+                        .title(title)
+                        .body(body)
+                        .dateCreated(new Temporal.DateTime(new Date(), 0))
+                        .state((State) taskStateSpinner.getSelectedItem())
+                        .teamTask(selectedTeam)
+                        .build();
+
+
+                Amplify.API.mutate(
+                        ModelMutation.create(newTask),
+                        successRes -> Log.i(TAG, "AddTaskActivity.onCreate(): made a task successfully"),
+                        failureRes -> Log.e(TAG, "AddTaskActivity.onCreate(): failed with this res" + failureRes)
+                );
+
+                snackbar.show();
+
             }
 
-            Team selectedTeam = teams.stream().filter(t -> t.getName().equals(selectedTeamString)).findAny().orElseThrow(RuntimeException::new);
-
-            Task newTask = Task.builder()
-                    .title(title)
-                    .body(body)
-                    .dateCreated(new Temporal.DateTime(new Date(), 0))
-                    .state((State) taskStateSpinner.getSelectedItem())
-                    .teamTask(selectedTeam)
-                    .build();
-
-
-            Amplify.API.mutate(
-                    ModelMutation.create(newTask),
-                    successRes -> Log.i(TAG, "AddTaskActivity.onCreate(): made a task successfully"),
-                    failureRes -> Log.e(TAG, "AddTaskActivity.onCreate(): failed with this res" + failureRes)
-            );
-
-            snackbar.show();
         });
     }
 }

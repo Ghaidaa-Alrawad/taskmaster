@@ -16,6 +16,7 @@ type Task @model @auth(rules: [{allow: public}]){
   state: State
   teamId : ID! @index(name:"byTeam", sortKeyFields:["title"])
   teamTask : Team @belongsTo(fields:["teamId"])
+  taskS3Uri : String
 }
 
 enum State{

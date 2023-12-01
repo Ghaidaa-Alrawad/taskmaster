@@ -6,7 +6,7 @@
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 100,
-      "apiKeyExpirationDate": "2024-03-08T20:09:13.778Z",
+      "apiKeyExpirationDate": "2024-03-10T19:05:45.657Z",
       "keyDescription": "this API key for the model to be generated in the cloud taskMasterLab32"
     },
     "conflictResolution": {

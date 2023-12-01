@@ -27,6 +27,10 @@ import com.tasks.taskmanager.R;
 import com.tasks.taskmanager.activity.adapter.TasksListRecyclerViewAdapter;
 import com.amplifyframework.datastore.generated.model.State;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,6 +152,32 @@ public class MainActivity extends AppCompatActivity {
 //                    });
 //                },
 //                failure -> Log.i(TAG, "Did not red Task")
+//        );
+
+//        String emptyFileName = "EmptyTetFileName";
+//        File emptyFile = new File(getApplicationContext().getFilesDir(), emptyFileName);
+//
+//        try {
+//            BufferedWriter emptyFileBufferedWriter = new BufferedWriter(new FileWriter(emptyFileName));
+//
+//            emptyFileBufferedWriter.append("Some text from me gg \n another text from gg2");
+//
+//            emptyFileBufferedWriter.close();
+//        }catch (IOException ioe){
+//            Log.i(TAG, "Could not write locally with filename" + emptyFileName);
+//        }
+//
+//        String emptyFileS3Key = "someFileInS3.txt";
+//
+//        Amplify.Storage.uploadFile(
+//                emptyFileS3Key,
+//                emptyFile,
+//                success -> {
+//                    Log.i(TAG, "S3 upload success and the key is : " + success.getKey());
+//                },
+//                fail -> {
+//                    Log.i(TAG, "S3 upload failed!! " + fail.getMessage(), fail);
+//                }
 //        );
 
         setUpLogInAndLogOutButtons();

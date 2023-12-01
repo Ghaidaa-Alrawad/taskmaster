@@ -25,6 +25,5 @@ public class AllTasks extends AppCompatActivity {
                 startActivity(goToHome);
             }
         });
-
     }
 }

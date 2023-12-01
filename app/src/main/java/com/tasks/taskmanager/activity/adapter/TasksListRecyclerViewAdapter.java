@@ -1,5 +1,7 @@
 package com.tasks.taskmanager.activity.adapter;
 
+import static com.tasks.taskmanager.activity.MainActivity.TASK_ID_TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.datastore.generated.model.Task;
 import com.tasks.taskmanager.R;
+import com.tasks.taskmanager.activity.EditTaskActivity;
 import com.tasks.taskmanager.activity.TaskDetails;
 
 
@@ -73,6 +76,8 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         String taskDate = dateCreatedString;
         String taskState = tasks.get(position).getState().toString();
         String teamName = tasks.get(position).getTeamTask().getName();
+        String taskImg = tasks.get(position).getTaskS3Uri();
+
 
         taskFragmentTextViewTitle.setText(taskTitle);
         taskFragmentTextViewDate.setText(taskDate);
@@ -80,14 +85,27 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         taskFragmentTextViewTeam.setText(teamName);
 
 
+
         View tasksViewHolder = holder.itemView;
         tasksViewHolder.setOnClickListener(v -> {
             Intent goToTaskDetailsIntent = new Intent(callingActivity, TaskDetails.class);
+            //            goToTaskDetailsIntent.putExtra(TASK_ID_TAG, tasks.get(position).getId());
             goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
             goToTaskDetailsIntent.putExtra("taskBody", taskBody);
             goToTaskDetailsIntent.putExtra("taskDate", taskDate);
             goToTaskDetailsIntent.putExtra("taskState", taskState);
             goToTaskDetailsIntent.putExtra("teamName", teamName);
+            goToTaskDetailsIntent.putExtra("taskS3Uri", taskImg);
+
+            //here if i want it to go to the edit page when it click on the task
+//            Intent goToTaskDetailsIntent = new Intent(callingActivity, EditTaskActivity.class);
+//            goToTaskDetailsIntent.putExtra(TASK_ID_TAG, tasks.get(position).getId());
+//            goToTaskDetailsIntent.putExtra("taskTitle", taskTitle);
+//            goToTaskDetailsIntent.putExtra("taskBody", taskBody);
+//            goToTaskDetailsIntent.putExtra("taskDate", taskDate);
+//            goToTaskDetailsIntent.putExtra("taskState", taskState);
+//            goToTaskDetailsIntent.putExtra("teamName", teamName);
+
 
             callingActivity.startActivity(goToTaskDetailsIntent);
         });
@@ -105,5 +123,4 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
             super(itemView);
         }
     }
-
 }

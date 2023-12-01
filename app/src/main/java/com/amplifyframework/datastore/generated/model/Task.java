@@ -33,12 +33,14 @@ public final class Task implements Model {
   public static final QueryField DATE_CREATED = field("Task", "dateCreated");
   public static final QueryField STATE = field("Task", "state");
   public static final QueryField TEAM_TASK = field("Task", "teamId");
+  public static final QueryField TASK_S3_URI = field("Task", "taskS3Uri");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="AWSDateTime") Temporal.DateTime dateCreated;
   private final @ModelField(targetType="State") State state;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "teamId", type = Team.class) Team teamTask;
+  private final @ModelField(targetType="String") String taskS3Uri;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
@@ -71,6 +73,10 @@ public final class Task implements Model {
       return teamTask;
   }
   
+  public String getTaskS3Uri() {
+      return taskS3Uri;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -79,13 +85,14 @@ public final class Task implements Model {
       return updatedAt;
   }
   
-  private Task(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask) {
+  private Task(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask, String taskS3Uri) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.dateCreated = dateCreated;
     this.state = state;
     this.teamTask = teamTask;
+    this.taskS3Uri = taskS3Uri;
   }
   
   @Override
@@ -102,6 +109,7 @@ public final class Task implements Model {
               ObjectsCompat.equals(getDateCreated(), task.getDateCreated()) &&
               ObjectsCompat.equals(getState(), task.getState()) &&
               ObjectsCompat.equals(getTeamTask(), task.getTeamTask()) &&
+              ObjectsCompat.equals(getTaskS3Uri(), task.getTaskS3Uri()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt());
       }
@@ -116,6 +124,7 @@ public final class Task implements Model {
       .append(getDateCreated())
       .append(getState())
       .append(getTeamTask())
+      .append(getTaskS3Uri())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -132,6 +141,7 @@ public final class Task implements Model {
       .append("dateCreated=" + String.valueOf(getDateCreated()) + ", ")
       .append("state=" + String.valueOf(getState()) + ", ")
       .append("teamTask=" + String.valueOf(getTeamTask()) + ", ")
+      .append("taskS3Uri=" + String.valueOf(getTaskS3Uri()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -157,6 +167,7 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -167,7 +178,8 @@ public final class Task implements Model {
       body,
       dateCreated,
       state,
-      teamTask);
+      teamTask,
+      taskS3Uri);
   }
   public interface TitleStep {
     BuildStep title(String title);
@@ -181,6 +193,7 @@ public final class Task implements Model {
     BuildStep dateCreated(Temporal.DateTime dateCreated);
     BuildStep state(State state);
     BuildStep teamTask(Team teamTask);
+    BuildStep taskS3Uri(String taskS3Uri);
   }
   
 
@@ -191,17 +204,19 @@ public final class Task implements Model {
     private Temporal.DateTime dateCreated;
     private State state;
     private Team teamTask;
+    private String taskS3Uri;
     public Builder() {
       
     }
     
-    private Builder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask) {
+    private Builder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask, String taskS3Uri) {
       this.id = id;
       this.title = title;
       this.body = body;
       this.dateCreated = dateCreated;
       this.state = state;
       this.teamTask = teamTask;
+      this.taskS3Uri = taskS3Uri;
     }
     
     @Override
@@ -214,7 +229,8 @@ public final class Task implements Model {
           body,
           dateCreated,
           state,
-          teamTask);
+          teamTask,
+          taskS3Uri);
     }
     
     @Override
@@ -248,6 +264,12 @@ public final class Task implements Model {
         return this;
     }
     
+    @Override
+     public BuildStep taskS3Uri(String taskS3Uri) {
+        this.taskS3Uri = taskS3Uri;
+        return this;
+    }
+    
     /**
      * @param id id
      * @return Current Builder instance, for fluent method chaining
@@ -260,8 +282,8 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask) {
-      super(id, title, body, dateCreated, state, teamTask);
+    private CopyOfBuilder(String id, String title, String body, Temporal.DateTime dateCreated, State state, Team teamTask, String taskS3Uri) {
+      super(id, title, body, dateCreated, state, teamTask, taskS3Uri);
       Objects.requireNonNull(title);
     }
     
@@ -289,5 +311,11 @@ public final class Task implements Model {
      public CopyOfBuilder teamTask(Team teamTask) {
       return (CopyOfBuilder) super.teamTask(teamTask);
     }
+    
+    @Override
+     public CopyOfBuilder taskS3Uri(String taskS3Uri) {
+      return (CopyOfBuilder) super.taskS3Uri(taskS3Uri);
+    }
   }
+
 }

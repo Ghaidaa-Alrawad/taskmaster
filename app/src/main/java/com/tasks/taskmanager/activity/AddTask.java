@@ -331,5 +331,4 @@ public class AddTask extends AppCompatActivity {
             Log.d("MyAmplifyApp", "No image to delete");
         }
     }
-
 }

@@ -72,6 +72,7 @@ mutation CreateTask(
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version
@@ -102,6 +103,7 @@ mutation UpdateTask(
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version
@@ -132,6 +134,7 @@ mutation DeleteTask(
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version

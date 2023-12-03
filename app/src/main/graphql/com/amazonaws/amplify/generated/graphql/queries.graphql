@@ -84,6 +84,7 @@ query GetTask($id: ID!) {
       _lastChangedAt
       __typename
     }
+    taskS3Uri
     createdAt
     updatedAt
     _version
@@ -106,6 +107,7 @@ query ListTasks(
       dateCreated
       state
       teamId
+      taskS3Uri
       createdAt
       updatedAt
       _version
@@ -138,6 +140,7 @@ query SyncTasks(
       dateCreated
       state
       teamId
+      taskS3Uri
       createdAt
       updatedAt
       _version
@@ -242,6 +245,7 @@ query TasksByTeamIdAndTitle(
       dateCreated
       state
       teamId
+      taskS3Uri
       createdAt
       updatedAt
       _version

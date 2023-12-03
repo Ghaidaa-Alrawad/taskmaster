@@ -34,8 +34,10 @@ import com.tasks.taskmanager.R;
 //import com.tasks.taskmanager.activity.model.Task;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,6 +149,61 @@ public class AddTask extends AppCompatActivity {
                 }
             }
         }
+
+        String action = callingIntent.getAction();
+        String type = callingIntent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSharedImage(callingIntent);
+            }
+        }
+    }
+
+    private File createTempFile() {
+        String fileName = "temp_image";
+        File tempDir = getApplicationContext().getCacheDir();
+        try {
+            return File.createTempFile(fileName, null, tempDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void handleSharedImage(Intent intent) {
+        Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        Log.i(TAG, "imageUri is" + imageUri);
+        if (imageUri != null) {
+            selectedImageView.setImageURI(imageUri);
+            filePath = getFilePathFromUri(imageUri);
+            Log.i(TAG, "handleSharedImage: inside the if condition");
+            Log.i(TAG, "filepath is " + filePath);
+        } else filePath = null;
+    }
+
+    private String getFilePathFromUri(Uri uri) {
+        String filePath = null;
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            if (inputStream != null) {
+                File tempFile = createTempFile();
+                if (tempFile != null) {
+                    OutputStream outputStream = new FileOutputStream(tempFile);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    filePath = tempFile.getAbsolutePath();
+                    outputStream.close();
+                    inputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return filePath;
     }
 
 

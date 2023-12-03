@@ -61,10 +61,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.118" />
 
     <EditText
         android:id="@+id/addTaskInput"
@@ -201,19 +201,20 @@
 
     <Button
         android:id="@+id/addImgButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="138dp"
+        android:layout_height="54dp"
         android:backgroundTint="#526D82"
         android:fontFamily="casual"
-        android:text="Add Img"
         android:onClick="onAddImageButtonClicked"
+        android:text="Add Img"
         android:textColor="#DDE6ED"
-        android:textSize="24sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24"
+        app:layout_constraintVertical_bias="0.184"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="14dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -240,5 +241,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.171" />
+
+    <Button
+        android:id="@+id/deleteImgButton"
+        android:layout_width="138dp"
+        android:layout_height="54dp"
+        android:backgroundTint="#526D82"
+        android:fontFamily="casual"
+        android:onClick="onDeleteImageButtonClicked"
+        android:text="Delete Img"
+        android:textColor="#DDE6ED"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="14dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -32,6 +34,9 @@ import com.tasks.taskmanager.R;
 //import com.tasks.taskmanager.activity.model.Task;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +102,62 @@ public class AddTask extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Intent callingIntent = getIntent();
+
+        if (callingIntent != null) {
+            Log.i(TAG, "Received intent with type: " + callingIntent.getType());
+
+            if (callingIntent.getType() != null && callingIntent.getType().equals("text/plain")) {
+                String callingText = callingIntent.getStringExtra(Intent.EXTRA_TEXT);
+                if (callingText != null) {
+                    String cleanText = cleanText(callingText);
+                    ((TextView) findViewById(R.id.addTaskInput)).setText(cleanText);
+                }
+            }
+
+            if (callingIntent.getType() != null && callingIntent.getType().startsWith("image/")) {
+                Log.i(TAG, "Received image intent");
+
+                Uri incomingImgFileUri = callingIntent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+                if (incomingImgFileUri != null) {
+                    Log.i(TAG, "Received image URI: " + incomingImgFileUri.toString());
+
+                    try {
+                        InputStream incomingImgFileInputStream = getContentResolver().openInputStream(incomingImgFileUri);
+
+                        ImageView taskImgView = findViewById(R.id.imageView3);
+
+                        if (taskImgView != null) {
+                            taskImgView.setImageBitmap(BitmapFactory.decodeStream(incomingImgFileInputStream));
+                            Log.i(TAG, "Image set successfully");
+                        } else {
+                            Log.e(TAG, "ImageView is null");
+                        }
+
+                    } catch (IOException io) {
+                        Log.e(TAG, "Error handling image: " + io.getMessage(), io);
+                    }
+                } else {
+                    Log.d(TAG, "No image URI received");
+                }
+            }
+        }
+    }
+
+
+    private String cleanText(String text){
+        text = text.replaceAll("\\b(?:https?|ftp)://\\S+\\b", "");
+
+        text = text.replaceAll("\"", "");
+
+        return text;
+    }
+
     public void onAddImageButtonClicked(View view) {
         if (pickMedia != null) {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
@@ -106,6 +167,7 @@ public class AddTask extends AppCompatActivity {
             Log.e("PhotoPicker", "pickMedia is null");
         }
     }
+
 
     private String getRealPathFromURI(Uri contentUri) {
         String[] projection = {MediaStore.Images.Media.DATA};
@@ -250,4 +312,24 @@ public class AddTask extends AppCompatActivity {
 
         });
     }
+
+    public void onDeleteImageButtonClicked(View view) {
+        if (filePath != null && !filePath.isEmpty()) {
+            File imageFile = new File(filePath);
+            Amplify.Storage.remove(
+                    imageFile.getName(),
+                    result -> {
+                        Log.i("MyAmplifyApp", "Successfully deleted: " + result.getKey());
+                        filePath = null;
+                        selectedImageView.setImageResource(android.R.color.transparent);
+                    },
+                    error -> {
+                        Log.e("MyAmplifyApp", "Deletion failed", error);
+                    }
+            );
+        } else {
+            Log.d("MyAmplifyApp", "No image to delete");
+        }
+    }
+
 }

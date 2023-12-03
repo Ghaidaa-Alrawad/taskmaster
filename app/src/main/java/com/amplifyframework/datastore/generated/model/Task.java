@@ -317,5 +317,4 @@ public final class Task implements Model {
       return (CopyOfBuilder) super.taskS3Uri(taskS3Uri);
     }
   }
-
 }

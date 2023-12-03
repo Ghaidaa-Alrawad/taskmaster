@@ -23,11 +23,11 @@ This mobile app revolves around seamlessly adding tasks and effortlessly viewing
 
 **You can add img from share**
 
-[sharingImg.jfif](screenshots%2FsharingImg.jfif)
+![sharingImg.jfif](screenshots%2FsharingImg.jfif)
 
 **The img from share will be displayed in the screen**
 
-[addedImgFromShare.jfif](screenshots%2FaddedImgFromShare.jfif)
+![addedImgFromShare.jfif](screenshots%2FaddedImgFromShare.jfif)
 
 ![AddTaskSubmitButton](/screenshots/addTaskSubmittion.jfif)
 

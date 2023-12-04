@@ -53,6 +53,18 @@
       "service": "Cognito"
     }
   },
+  "predictions": {
+    "speechGeneratoreeea78d9taskmaster": {
+      "convertType": "speechGenerator",
+      "providerPlugin": "awscloudformation",
+      "service": "Polly"
+    },
+    "translateText307a958dTaskMaster": {
+      "convertType": "translateText",
+      "providerPlugin": "awscloudformation",
+      "service": "Translate"
+    }
+  },
   "storage": {
     "taskmaster": {
       "dependsOn": [],

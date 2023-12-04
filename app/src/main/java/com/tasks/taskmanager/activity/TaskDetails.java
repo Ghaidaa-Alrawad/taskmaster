@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +21,17 @@ import com.amplifyframework.datastore.generated.model.Task;
 import com.tasks.taskmanager.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TaskDetails extends AppCompatActivity {
 
     public String taskImg;
+
+    private MediaPlayer mp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,8 @@ public class TaskDetails extends AppCompatActivity {
             startActivity(goBack);
         });
 
+
+        mp = new MediaPlayer();
 
         Intent intent = getIntent();
         String taskTitle = intent.getStringExtra("taskTitle");
@@ -66,6 +76,7 @@ public class TaskDetails extends AppCompatActivity {
         taskLongitudeTextView.setText("Longitude: "+taskLongitude);
 
         updateUI();
+        setUpSpeakButton();
     }
 
     private void updateUI() {
@@ -83,6 +94,40 @@ public class TaskDetails extends AppCompatActivity {
                     },
                     error -> Log.e("MyAmplifyApp", "Download failed", error)
             );
+        }
+    }
+
+    private void setUpSpeakButton(){
+        Button speakButton = (Button) findViewById(R.id.convertTextToSpeach);
+
+        speakButton.setOnClickListener(b -> {
+            String taskBody = ((TextView) findViewById(R.id.taskDetailDescription)).getText().toString();
+
+            Amplify.Predictions.convertTextToSpeech(
+                    taskBody,
+                    result ->playAudio(result.getAudioData()),
+                    error -> Log.e("TAG", "conversion failed")
+            );
+
+        });
+    }
+
+
+    private void playAudio(InputStream data) {
+        File mp3File = new File(getCacheDir(), "audio.mp3");
+
+        try (OutputStream out = new FileOutputStream(mp3File)) {
+            byte[] buffer = new byte[8 * 1_024];
+            int bytesRead;
+            while ((bytesRead = data.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            mp.reset();
+            mp.setOnPreparedListener(MediaPlayer::start);
+            mp.setDataSource(new FileInputStream(mp3File).getFD());
+            mp.prepareAsync();
+        } catch (IOException error) {
+            Log.e("MyAmplifyApp", "Error writing audio file", error);
         }
     }
 

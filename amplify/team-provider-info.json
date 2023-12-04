@@ -57,6 +57,10 @@
       },
       "analytics": {
         "taskmaster": {}
+      },
+      "predictions": {
+        "translateText307a958dTaskMaster": {},
+        "speechGeneratoreeea78d9taskmaster": {}
       }
     }
   }

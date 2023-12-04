@@ -44,6 +44,8 @@ public class TaskDetails extends AppCompatActivity {
         String taskState = intent.getStringExtra("taskState");
         String teamTask = intent.getStringExtra("teamName");
         taskImg = intent.getStringExtra("taskS3Uri");
+        String taskLatitude = intent.getStringExtra("taskLatitude");
+        String taskLongitude = intent.getStringExtra("taskLatitude");
 
         TextView titleTextView = findViewById(R.id.taskDetailTitle);
         titleTextView.setText(taskTitle);
@@ -56,6 +58,12 @@ public class TaskDetails extends AppCompatActivity {
 
         TextView teamTaskTextView = findViewById(R.id.teamTask);
         teamTaskTextView.setText(teamTask);
+
+        TextView taskLatitudeTextView = findViewById(R.id.textViewForLatitude);
+        taskLatitudeTextView.setText("Latitude: "+taskLatitude);
+
+        TextView taskLongitudeTextView = findViewById(R.id.textViewForLongitude);
+        taskLongitudeTextView.setText("Longitude: "+taskLongitude);
 
         updateUI();
     }

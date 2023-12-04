@@ -73,6 +73,8 @@ mutation CreateTask(
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version
@@ -104,6 +106,8 @@ mutation UpdateTask(
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version
@@ -135,6 +139,8 @@ mutation DeleteTask(
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version

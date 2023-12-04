@@ -61,6 +61,8 @@ subscription OnCreateTask($filter: ModelSubscriptionTaskFilterInput) {
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version
@@ -89,6 +91,8 @@ subscription OnUpdateTask($filter: ModelSubscriptionTaskFilterInput) {
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version
@@ -117,6 +121,8 @@ subscription OnDeleteTask($filter: ModelSubscriptionTaskFilterInput) {
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version

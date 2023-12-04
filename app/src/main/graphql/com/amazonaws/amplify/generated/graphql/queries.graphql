@@ -85,6 +85,8 @@ query GetTask($id: ID!) {
       __typename
     }
     taskS3Uri
+    taskLatitude
+    taskLongitude
     createdAt
     updatedAt
     _version
@@ -108,6 +110,8 @@ query ListTasks(
       state
       teamId
       taskS3Uri
+      taskLatitude
+      taskLongitude
       createdAt
       updatedAt
       _version
@@ -141,6 +145,8 @@ query SyncTasks(
       state
       teamId
       taskS3Uri
+      taskLatitude
+      taskLongitude
       createdAt
       updatedAt
       _version
@@ -246,6 +252,8 @@ query TasksByTeamIdAndTitle(
       state
       teamId
       taskS3Uri
+      taskLatitude
+      taskLongitude
       createdAt
       updatedAt
       _version

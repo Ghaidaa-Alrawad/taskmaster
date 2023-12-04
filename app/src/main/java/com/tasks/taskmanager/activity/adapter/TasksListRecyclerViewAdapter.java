@@ -77,6 +77,8 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
         String taskState = tasks.get(position).getState().toString();
         String teamName = tasks.get(position).getTeamTask().getName();
         String taskImg = tasks.get(position).getTaskS3Uri();
+        String taskLatitude = tasks.get(position).getTaskLatitude();
+        String taskLongitude = tasks.get(position).getTaskLongitude();
 
 
         taskFragmentTextViewTitle.setText(taskTitle);
@@ -96,6 +98,8 @@ public class TasksListRecyclerViewAdapter extends RecyclerView.Adapter<TasksList
             goToTaskDetailsIntent.putExtra("taskState", taskState);
             goToTaskDetailsIntent.putExtra("teamName", teamName);
             goToTaskDetailsIntent.putExtra("taskS3Uri", taskImg);
+            goToTaskDetailsIntent.putExtra("taskLatitude", taskLatitude);
+            goToTaskDetailsIntent.putExtra("taskLongitude", taskLongitude);
 
             //here if i want it to go to the edit page when it click on the task
 //            Intent goToTaskDetailsIntent = new Intent(callingActivity, EditTaskActivity.class);

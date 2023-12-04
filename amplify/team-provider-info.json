@@ -54,6 +54,9 @@
       },
       "storage": {
         "taskmaster": {}
+      },
+      "analytics": {
+        "taskmaster": {}
       }
     }
   }
